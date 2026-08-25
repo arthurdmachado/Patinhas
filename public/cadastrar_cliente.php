@@ -1,5 +1,7 @@
 <?php
 
+include '../infra/conexao.php';
+
 if (isset($_POST['cadastrar'])) {
 
     $nome = $_POST['nome'];
@@ -61,9 +63,53 @@ if (isset($_POST['cadastrar'])) {
         </button>
 
     </form>
+
+    <h2>Usuários cadastrados</h2>
+
+    <table border="1" cellpadding="10">
+
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Ações</th>
+        </tr>
     
 </body>
 </html>
 
+<?php while ($usuario = $resultado->fetch_assoc()) { ?>
 
+            <tr>
+
+                <td>
+                    <?= htmlspecialchars($usuario['id']) ?>
+                </td>
+
+                <td>
+                    <?= htmlspecialchars($usuario['nome']) ?>
+                </td>
+
+                <td>
+                    <?= htmlspecialchars($usuario['email']) ?>
+                </td>
+
+                <td>
+
+                    <a href="editar.php?id=<?= $usuario['id'] ?>">
+                        Editar
+                    </a>
+
+                    <a>
+                        href="index.php?excluir=<?= $usuario['id'] ?>"
+                        onclick="return confirm('Tem certeza que deseja excluir este usuário?')"
+                    >
+                        Excluir
+                    </a>
+
+                </td>
+
+            </tr>
+
+        <?php } ?>
 

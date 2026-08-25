@@ -2,10 +2,10 @@
 
 $host = "localhost";
 $usuario = "root";
-$senha = "root";
+$senha = "";
 $banco = "patinha_segura";
 
-$conexao = new mysqli($host, $usuario, $senha, $banco);
+$conexao = new mysqli($host, $usuario, $senha, $banco,6666);
 
 if ($conexao->connect_error) {
     die("Erro na conexão com o banco: " . $conexao->connect_error);
