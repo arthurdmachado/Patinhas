@@ -21,7 +21,7 @@ if (isset($_POST['animais'])) {
 </head>
 <body>
 
-    <header>Tela Inicial</header>
+    <header><h1>Tela Inicial</h1></header>
 
     <p>Qual Cadastro você deseja realizar?</p>
 
