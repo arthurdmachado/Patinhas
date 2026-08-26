@@ -21,19 +21,59 @@ if (isset($_POST['cadastrar'])) {
         die("Erro ao cadastrar usuário: " . $stmt->error);
     }
 
+    $stmt->close();
+
     header("Location: cadastrar_cliente.php");
     exit;
 }
 
+if (isset($_GET['excluir'])) {
+
+    $id = $_GET['excluir'];
+
+    $sql = "DELETE FROM clientes WHERE id = ?";
+
+    $stmt = $conexao->prepare($sql);
+
+    if (!$stmt) {
+        die("Erro ao preparar exclusão: " . $conexao->error);
+    }
+
+    $stmt->bind_param("i", $id);
+
+    if (!$stmt->execute()) {
+        die("Erro ao excluir usuário: " . $stmt->error);
+    }
+
+    $stmt->close();
+
+    header("Location: cadastrar_cliente.php");
+    exit;
+}
+
+$sql = "SELECT id, nome, email FROM clientes ORDER BY id DESC";
+
+$resultado = $conexao->query($sql);
+
+if (!$resultado) {
+    die("Erro ao buscar usuários: " . $conexao->error);
+}
+
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Cadastro de Clientes</title>
 </head>
+
 <body>
+
+    <h1>Cadastrar cliente</h1>
+
     <form method="POST">
 
         <label for="nome">Nome:</label>
@@ -74,11 +114,8 @@ if (isset($_POST['cadastrar'])) {
             <th>E-mail</th>
             <th>Ações</th>
         </tr>
-    
-</body>
-</html>
 
-<?php while ($usuario = $resultado->fetch_assoc()) { ?>
+        <?php while ($usuario = $resultado->fetch_assoc()) { ?>
 
             <tr>
 
@@ -96,12 +133,14 @@ if (isset($_POST['cadastrar'])) {
 
                 <td>
 
-                    <a href="editar.php?id=<?= $usuario['id'] ?>">
+                    <a href="editar_clientes.php?id=<?= $usuario['id'] ?>">
                         Editar
                     </a>
 
-                    <a>
-                        href="index.php?excluir=<?= $usuario['id'] ?>"
+                    |
+
+                    <a
+                        href="cadastrar_cliente.php?excluir=<?= $usuario['id'] ?>"
                         onclick="return confirm('Tem certeza que deseja excluir este usuário?')"
                     >
                         Excluir
@@ -113,3 +152,8 @@ if (isset($_POST['cadastrar'])) {
 
         <?php } ?>
 
+    </table>
+
+</body>
+
+</html>
